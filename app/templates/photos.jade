@@ -6,5 +6,6 @@ html
     h1 Flickr Date Fixer
     ul
       each photo in photos
-        li= photo.id + ": " + photo.title
+        li
+          a(href="http://www.flickr.com/photos/" + photo.owner + "/" + photo.id)= photo.id + ": " + photo.title
 

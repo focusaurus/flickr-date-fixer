@@ -11,6 +11,7 @@ flickrOptions =
   consumerKey: creds.key,
   consumerSecret: creds.secret,
   callbackURL: "http://peterlyons.com:#{PORT}/auth/flickr/callback"
+  userAuthorizationURL: "http://www.flickr.com/services/oauth/authorize?perms=write"
 
 #This hacks in a hard-coded set of auth data for rapid-turnaround
 #dev mode
@@ -62,14 +63,24 @@ app.get "/auth/flickr/callback", passport.authenticate("flickr", failureRedirect
 
 app.get "/photos", loggedIn, (req, res) ->
   params =
-    min_date_taken: "2002-12-08"
-    max_date_taken: "2002-12-09"
+    min_taken_date: "2002-12-08 12:00:00"
+    max_taken_date: "2002-12-08 12:00:01"
     content_type: "1" #photos only
     user_id: "me"
   req.flickr.executeAPIRequest "flickr.people.getPhotos", params, true, (error, answer) ->
-    console.log("@bug API done", error, answer);
+    console.log("@bug flickr.people.getPhotos API done", error, answer.photos.photo);
     res.locals {photos: answer.photos.photo}
     res.render "photos"
+
+
+app.get "/photo/:id", loggedIn, (req, res) ->
+  params =
+    photo_id: req.params.id
+  req.flickr.executeAPIRequest "flickr.photos.getInfo", params, true, (error, answer) ->
+    console.log("@bug flickr.photos.getInfo API done", error, answer);
+    console.log("@bug flickr.photos.getInfo API done", answer.photo.urls);
+    res.locals {photo: answer.photo}
+    res.render "photo"
 
 app.get "/logout", (req, res) ->
   req.logout()

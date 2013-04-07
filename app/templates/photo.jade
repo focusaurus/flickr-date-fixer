@@ -1,0 +1,9 @@
+doctype 5
+html
+  head
+    title flickr date fixer by Peter Lyons
+  body
+    h1 Flickr Date Fixer
+    p= photo.dates.taken
+    a(href=photo.urls.url[0]._content)= photo.urls.url[0]._content
+
