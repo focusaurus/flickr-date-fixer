@@ -16,7 +16,8 @@
     "winston": "~0.6.2",
     "passport": "~0.1.16",
     "passport-flickr": "~0.1.1",
-    "lodash": "~1.1.1"
+    "lodash": "~1.1.1",
+    "flickr": "~0.1.0"
   },
   "devDependencies": {}
 }

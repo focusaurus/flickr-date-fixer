@@ -1,11 +1,14 @@
 doctype 5
 html
   head
-    title "flickr date fixer by Peter Lyons"
+    title flickr date fixer by Peter Lyons
   body
     h1 Flickr Date Fixer
     if user
       p= "You are logged in as " + user.profile.displayName
-      a(href="/logout") Log out
+      p
+        a(href="/photos") Show Photos
+      p
+        a(href="/logout") Log out
     else
       a(href="/auth/flickr") Login via Flickr to get started
