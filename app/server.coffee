@@ -1,6 +1,7 @@
 _ = require "lodash"
 creds = require "../creds.json"
 express = require "express"
+coffeeMW = require "connect-coffee-script"
 FlickrStrategy = require("passport-flickr").Strategy
 log = require "winston"
 passport = require "passport"
@@ -26,10 +27,10 @@ verify = (token, tokenSecret, profile, done) ->
   done null, user
 
 loggedIn = (req, res, next) ->
-  if not req.user
-    return res.status(401).send "You must log in to do that"
   res.locals
     user: req.user
+  if not req.user
+    return res.status(401).render "home"
   req.flickr = new Flickr creds.key, creds.secret
   req.flickr.setOAuthTokens req.user.token, req.user.tokenSecret
   next()
@@ -48,7 +49,12 @@ passport.serializeUser (user, done) -> done null, user
 passport.deserializeUser (obj, done) -> done null, obj
 app.use passport.initialize()
 app.use passport.session()
-
+app.use coffeeMW
+  src: __dirname
+  dest: __dirname + "/../generated/js"
+  prefix: "/js"
+app.use express.static "#{__dirname}/../generated"
+app.use express.static "#{__dirname}/../static"
 app.use _devMode if creds.devMode
 
 app.get "/", (req, res, next) ->
@@ -59,19 +65,21 @@ app.get "/", (req, res, next) ->
 app.get "/auth/flickr", passport.authenticate 'flickr', -> #no-op
 
 app.get "/auth/flickr/callback", passport.authenticate("flickr", failureRedirect: "/"), (req, res) ->
-  res.redirect "/"
+  res.redirect "/photos"
 
 app.get "/photos", loggedIn, (req, res) ->
-  params =
-    min_taken_date: "2002-12-08 12:00:00"
-    max_taken_date: "2002-12-08 12:00:01"
-    content_type: "1" #photos only
-    user_id: "me"
-  req.flickr.executeAPIRequest "flickr.people.getPhotos", params, true, (error, answer) ->
-    console.log("@bug flickr.people.getPhotos API done", error, answer.photos.photo);
-    res.locals {photos: answer.photos.photo}
-    res.render "photos"
-
+  if req.xhr
+    params =
+      min_taken_date: "2002-12-08 12:00:00"
+      max_taken_date: "2002-12-08 12:00:01"
+      content_type: "1" #photos only
+      user_id: "me"
+    req.flickr.executeAPIRequest "flickr.people.getPhotos", params, true, (error, answer) ->
+      console.log("@bug flickr.people.getPhotos API done", error, answer.photos.photo);
+      return res.status(500).send(error) if error
+      res.send answer.photos.photo
+  else
+    return res.render "photos"
 
 app.get "/photo/:id", loggedIn, (req, res) ->
   params =

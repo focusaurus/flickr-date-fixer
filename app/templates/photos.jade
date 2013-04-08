@@ -1,11 +1,11 @@
-doctype 5
-html
-  head
-    title flickr date fixer by Peter Lyons
-  body
-    h1 Flickr Date Fixer
-    ul
-      each photo in photos
-        li
-          a(href="http://www.flickr.com/photos/" + photo.owner + "/" + photo.id)= photo.id + ": " + photo.title
-
+extends layout
+block body
+  ul.photos
+    li Loading photos from flickr
+  :coffee
+    $ ->
+      window.photos = photos = new App.Photos()
+      photoList = new App.PhotoList {collection: photos}
+      photos.on "sync", ->
+        $('ul.photos').replaceWith photoList.el
+      photos.fetch()

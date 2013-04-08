@@ -1,14 +1,10 @@
-doctype 5
-html
-  head
-    title flickr date fixer by Peter Lyons
-  body
-    h1 Flickr Date Fixer
-    if user
-      p= "You are logged in as " + user.profile.displayName
-      p
-        a(href="/photos") Show Photos
-      p
-        a(href="/logout") Log out
-    else
-      a(href="/auth/flickr") Login via Flickr to get started
+extends layout
+block body
+  h1 Flickr Date Fixer
+  ol
+    li Find photos in your flickr photostream with incorrect "taken" date
+    li select photos to fix
+    li Fix 'em!
+  button(type="button") Login via Flickr to get started
+  :coffee
+    $ -> $("button").on "click", -> window.location = "/auth/flickr"
