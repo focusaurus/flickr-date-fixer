@@ -6,6 +6,7 @@ block body
     $ ->
       window.photos = photos = new App.Photos()
       photoList = new App.PhotoList {collection: photos}
-      photos.on "sync", ->
+      photos.once "sync", ->
         $('ul.photos').replaceWith photoList.el
+        photos.each (photo) -> photo.fetchInfo()
       photos.fetch()

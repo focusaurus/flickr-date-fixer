@@ -5,17 +5,29 @@ class Photo extends Backbone.Model
       "/" + encodeURIComponent this.id
   title: =>
     this.attributes?.title
+  takenAt: =>
+    this.attributes?.dates?.taken
+  postedAt: =>
+    this.attributes?.dates?.posted
+  fetchInfo: =>
+    self = this
+    xhr = this.sync "read", this, url: "#{this.url()}/info"
+    xhr.done (response) ->
+      self.set "dates", response.dates
+    xhr
 
 class Photos extends Backbone.Collection
   url: "/photos"
   model: Photo
 
 class PhotoView extends Backbone.View
+  initialize: =>
+    this.listenTo this.model, "change", this.render
   tagName: "li"
   render: =>
-    console.log("@bug PhotoView rendering", this.model.title());
     link = "<a href='#{this.model.photoPageURL()}'>#{this.model.id} #{this.model.title()}</a>"
-    this.$el.html link
+    dates = "Taken: #{this.model.takenAt()}, Posted: #{this.model.postedAt()}"
+    this.$el.html link + dates
     return this
 
 class PhotoList extends Backbone.View
@@ -27,7 +39,6 @@ class PhotoList extends Backbone.View
   render: =>
     this.$el.empty()
     for photo in this.collection.toArray()
-      console.log("@bug PhotoList rendering view for", photo.id);
       view = new PhotoView {model: photo}
       view.render()
       this.$el.append view.el

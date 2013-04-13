@@ -81,14 +81,13 @@ app.get "/photos", loggedIn, (req, res) ->
   else
     return res.render "photos"
 
-app.get "/photo/:id", loggedIn, (req, res) ->
+app.get "/photos/:id/info", loggedIn, (req, res) ->
   params =
     photo_id: req.params.id
   req.flickr.executeAPIRequest "flickr.photos.getInfo", params, true, (error, answer) ->
     console.log("@bug flickr.photos.getInfo API done", error, answer);
-    console.log("@bug flickr.photos.getInfo API done", answer.photo.urls);
-    res.locals {photo: answer.photo}
-    res.render "photo"
+    console.log("@bug flickr.photos.getInfo API done", answer.photo);
+    res.send answer.photo
 
 app.get "/logout", (req, res) ->
   req.logout()
