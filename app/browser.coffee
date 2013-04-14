@@ -40,8 +40,8 @@ class Photo extends Backbone.Model
     if takenAt and postedAt
       mt = moment(takenAt)
       mp = moment(postedAt)
-      diff = mt.diff mp
-      return diff < 1000 * 60 * 60 * 72
+      diff = mp.diff mt
+      return Math.abs(diff) > (1000 * 60 * 60 * 72) #3 days
     else
       return true
 
@@ -63,19 +63,21 @@ class PhotoView extends Backbone.View
   tagName: "li"
   template: jade.compile """
 a(href=photoPageURL)= id + " " + title
-= "Taken: " + takenAt + " "
-= "Posted: " + postedAt
+= " Taken: " + takenAt
+= " Posted: " + postedAt + " "
 if needsFix
   button.fix Fix it!
 else
- = OK
+ span.OK OK
 """
   events:
     "click .fix": "fix"
   initialize: =>
     @listenTo this.model, "change", this.render
   fix: =>
-    @model.fix()
+    @$el.find('button').text("Fixing...").prop "disabled", true
+    xhr = @model.fix()
+    xhr.complete @render
   present: =>
     pojo =
       id: @model.id
