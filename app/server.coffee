@@ -89,6 +89,15 @@ app.get "/photos/:id/info", loggedIn, (req, res) ->
     console.log("@bug flickr.photos.getInfo API done", answer.photo);
     res.send answer.photo
 
+app.put "/photos/:id/setDates", loggedIn, express.bodyParser(), (req, res) ->
+  params =
+    photo_id: req.params.id
+    date_taken: req.body.date_taken
+  req.flickr.executeAPIRequest "flickr.photos.setDates", params, true, (error, answer) ->
+    console.log("@bug flickr.photos.setDates API done", error, answer);
+    return res.status(500).send(error) if error
+    res.send answer
+
 app.get "/logout", (req, res) ->
   req.logout()
   res.redirect "/"
