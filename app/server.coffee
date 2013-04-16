@@ -6,6 +6,7 @@ FlickrStrategy = require("passport-flickr").Strategy
 log = require "winston"
 passport = require "passport"
 {Flickr} = require "flickr"
+stylus = require "stylus"
 
 PORT = 9100
 flickrOptions =
@@ -21,7 +22,6 @@ _devMode = (req, res, next) ->
   next()
 
 verify = (token, tokenSecret, profile, done) ->
-  console.log("@bug auth", token, tokenSecret, profile);
   log.debug "flickr user authorized", profile
   user = {token, tokenSecret, profile}
   done null, user
@@ -53,6 +53,14 @@ app.use coffeeMW
   src: __dirname
   dest: __dirname + "/../generated/js"
   prefix: "/js"
+
+##### stylus setup #####
+stylusOptions =
+  src: __dirname
+  dest: "#{__dirname}/../generated"
+  force: true
+app.use stylus.middleware stylusOptions
+
 app.use express.static "#{__dirname}/../generated"
 app.use express.static "#{__dirname}/../static"
 app.use _devMode if creds.devMode
@@ -75,7 +83,6 @@ app.get "/photos", loggedIn, (req, res) ->
       content_type: "1" #photos only
       user_id: "me"
     req.flickr.executeAPIRequest "flickr.people.getPhotos", params, true, (error, answer) ->
-      console.log("@bug flickr.people.getPhotos API done", error, answer.photos.photo);
       return res.status(500).send(error) if error
       res.send answer.photos.photo
   else
@@ -85,8 +92,6 @@ app.get "/photos/:id/info", loggedIn, (req, res) ->
   params =
     photo_id: req.params.id
   req.flickr.executeAPIRequest "flickr.photos.getInfo", params, true, (error, answer) ->
-    console.log("@bug flickr.photos.getInfo API done", error, answer);
-    console.log("@bug flickr.photos.getInfo API done", answer.photo);
     res.send answer.photo
 
 app.put "/photos/:id/setDates", loggedIn, express.bodyParser(), (req, res) ->
@@ -94,7 +99,6 @@ app.put "/photos/:id/setDates", loggedIn, express.bodyParser(), (req, res) ->
     photo_id: req.params.id
     date_taken: req.body.date_taken
   req.flickr.executeAPIRequest "flickr.photos.setDates", params, true, (error, answer) ->
-    console.log("@bug flickr.photos.setDates API done", error, answer);
     return res.status(500).send(error) if error
     res.send answer
 

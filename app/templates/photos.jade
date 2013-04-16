@@ -1,12 +1,14 @@
 extends layout
 block body
-  ul.photos
-    li Loading photos from flickr
+  h1 Your photos with wonky taken date
+  button.fixAll Fix them all!
+  div.photos Loading photos from flickr...
   :coffee
     $ ->
       window.photos = photos = new App.Photos()
       photoList = new App.PhotoList {collection: photos}
       photos.once "sync", ->
-        $('ul.photos').replaceWith photoList.el
+        $(".photos").replaceWith photoList.el
         photos.each (photo) -> photo.fetchInfo()
       photos.fetch()
+      $(".fixAll").on "click", -> $(".fix").click()

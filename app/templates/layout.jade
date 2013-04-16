@@ -8,9 +8,11 @@ html
     script(src="/js/moment.js")
     script(src="/js/jade.js")
     script(src="/js/browser.js")
+    link(rel="stylesheet", href="/application.css")
   body
     if user
-      = "You are logged in as " + user.profile.displayName
-      != "&nbsp;"
-      a(href="/logout") Log out
+      .userInfo
+        != 'Logged in with <a href="http://flickr.com">flickr</a> as '
+        =  user.profile.displayName
+        != '. <a href="/logout">Log out</a>'
     block body

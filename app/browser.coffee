@@ -16,6 +16,9 @@ class Photo extends Backbone.Model
     posted = @attributes?.dates?.posted
     if posted
       moment.unix(posted).toDate()
+  thumbnailURL: =>
+    "http://farm#{@attributes.farm}.staticflickr.com/#{@attributes.server}/#{@id}_#{@attributes.secret}_t.jpg"
+
   fix: =>
     self = @
     mp = moment.unix(@attributes?.dates?.posted)
@@ -57,18 +60,34 @@ class Photos extends Backbone.Collection
   model: Photo
 
 class PhotoView extends Backbone.View
+  className: "v-photo"
   formatDate: (date) ->
     return "(loading...)" if not date
     moment(date).format("MMM D, YYYY")
-  tagName: "li"
   template: jade.compile """
-a(href=photoPageURL)= id + " " + title
-= " Taken: " + takenAt
-= " Posted: " + postedAt + " "
-if needsFix
-  button.fix Fix it!
-else
- span.OK OK
+a(href=photoPageURL)
+  img(src=thumbnailURL, title=title)
+table
+  tr
+    td ID
+    td
+      a(href=photoPageURL)= id
+  tr
+    td Title
+    td
+      a(href=photoPageURL)= title
+  tr
+    td Taken
+    td= takenAt
+  tr
+    td Posted
+    td= postedAt
+  tr
+    td(colspan="2")
+      if needsFix
+        button.fix Fix it!
+      else
+       span.OK OK
 """
   events:
     "click .fix": "fix"
@@ -86,12 +105,12 @@ else
       postedAt: @formatDate @model.postedAt()
       takenAt: @formatDate @model.takenAt()
       title: @model.title()
+      thumbnailURL: @model.thumbnailURL()
   render: =>
     @$el.html @template @present()
     return this
 
 class PhotoList extends Backbone.View
-  tagName: "ul"
   className: "v-photos"
   initialize: =>
     @listenTo @collection, "sync", @render
