@@ -50,6 +50,7 @@ define (require, exports, module) ->
         thumbnailURL: @model.thumbnailURL()
     render: =>
       @$el.html @template @present()
+      @$el.find("a").attr("target", "_blank")
       return this
 
   module.exports = Photo
