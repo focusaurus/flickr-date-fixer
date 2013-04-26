@@ -1,7 +1,6 @@
 extends layout
 block body
   h1 Your photos with wonky taken date
-  button.fixAll Fix them all!
   div.photos Loading photos from flickr...
   :coffee
     init = ($, _, Backbone, Photos, PhotoList) ->

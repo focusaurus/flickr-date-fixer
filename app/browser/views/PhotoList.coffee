@@ -9,6 +9,8 @@ define (require, exports, module) ->
 
     render: =>
       @$el.empty()
+      @$el.append '<button class="fixAll">Fix them all!</button>'
+
       for photo in @collection.toArray()
         view = new PhotoView {model: photo}
         view.render()

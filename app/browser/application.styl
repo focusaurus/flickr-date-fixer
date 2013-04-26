@@ -1,9 +1,27 @@
+a
+  text-decoration none
+  &:hover
+    text-decoration underline
+
 body
   padding 0
   margin 0 50px
   font-family sans-serif
 
+h1
+  font-size 32px
+
+button
+  background-color #aaa
+  border-radius 5px
+  font-size 16px
+
+button.fixAll
+  display block
+  margin-bottom 20px
+
 .v-photo
+  border 1px dashed #333
   float left
   clear left
   min-width 500px
@@ -17,14 +35,15 @@ body
     clear left
   table
     color #bbb
+  .taken
+    color red
+  .photoID
+    color black
 
 .userInfo
   position fixed
   top 10px
   right 20px
-
-h1
-  font-size 32px
 
 .OK
   color green

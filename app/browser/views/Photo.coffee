@@ -13,14 +13,14 @@ define (require, exports, module) ->
     tr
       td ID
       td
-        a(href=photoPageURL)= id
+        a.photoID(href=photoPageURL)= id
     tr
       td Title
       td
         a(href=photoPageURL)= title
     tr
       td Taken
-      td= takenAt
+      td.taken= takenAt
     tr
       td Posted
       td= postedAt
