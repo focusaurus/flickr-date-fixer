@@ -30,7 +30,7 @@ loggedIn = (req, res, next) ->
   res.locals
     user: req.user
   if not req.user
-    return res.status(401).render "home"
+    return res.status(401).redirect "/"
   req.flickr = new Flickr creds.key, creds.secret
   req.flickr.setOAuthTokens req.user.token, req.user.tokenSecret
   next()
@@ -56,11 +56,12 @@ app.use coffeeMW
 
 ##### stylus setup #####
 stylusOptions =
-  src: __dirname
+  src: "#{__dirname}/browser"
   dest: "#{__dirname}/../generated"
   force: true
 app.use stylus.middleware stylusOptions
 
+app.use express.static "#{__dirname}/../generated/rjs"
 app.use express.static "#{__dirname}/../generated"
 app.use express.static "#{__dirname}/../static"
 app.use _devMode if creds.devMode

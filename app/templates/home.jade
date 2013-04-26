@@ -7,4 +7,5 @@ block body
     li Fix 'em!
   button(type="button") Login via Flickr to get started
   :coffee
-    $ -> $("button").on "click", -> window.location = "/auth/flickr"
+    require ["jquery"], ($) ->
+      $ -> $("button").on "click", -> window.location = "/auth/flickr"

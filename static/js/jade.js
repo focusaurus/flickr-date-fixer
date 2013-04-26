@@ -1,1 +1,1 @@
-../../node_modules/jade/jade.min.js
+../../node_modules/jade/jade.js
