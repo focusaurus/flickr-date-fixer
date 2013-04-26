@@ -4,9 +4,7 @@ require.config
     lodash:
       exports: "_"
     backbone:
-      deps: ["lodash", "jquery"]
+      deps: ["underscore", "jquery"]
       exports: "Backbone"
     jade:
       exports: "jade"
-  map:
-    underscore: "lodash"

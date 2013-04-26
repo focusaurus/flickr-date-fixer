@@ -36,7 +36,7 @@ define (require, exports, module) ->
     initialize: =>
       @listenTo this.model, "change", this.render
     fix: =>
-      @$el.find('button').text("Fixing...").prop "disabled", true
+      @$('button').text("Fixing...").prop "disabled", true
       xhr = @model.fix()
       xhr.complete @render
     present: =>
@@ -50,7 +50,7 @@ define (require, exports, module) ->
         thumbnailURL: @model.thumbnailURL()
     render: =>
       @$el.html @template @present()
-      @$el.find("a").attr("target", "_blank")
+      @$("a").attr "target", "_blank"
       return this
 
   module.exports = Photo

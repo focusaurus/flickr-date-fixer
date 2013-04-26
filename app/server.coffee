@@ -74,20 +74,20 @@ app.get "/", (req, res, next) ->
 app.get "/auth/flickr", passport.authenticate 'flickr', -> #no-op
 
 app.get "/auth/flickr/callback", passport.authenticate("flickr", failureRedirect: "/"), (req, res) ->
-  res.redirect "/photos"
+  res.redirect "/list"
 
 app.get "/photos", loggedIn, (req, res) ->
-  if req.xhr
-    params =
-      min_taken_date: "2002-12-08 12:00:00"
-      max_taken_date: "2002-12-08 12:00:01"
-      content_type: "1" #photos only
-      user_id: "me"
-    req.flickr.executeAPIRequest "flickr.people.getPhotos", params, true, (error, answer) ->
-      return res.status(500).send(error) if error
-      res.send answer.photos.photo
-  else
-    return res.render "photos"
+  params =
+    min_taken_date: "2002-12-08 12:00:00"
+    max_taken_date: "2002-12-08 12:00:01"
+    content_type: "1" #photos only
+    user_id: "me"
+  req.flickr.executeAPIRequest "flickr.people.getPhotos", params, true, (error, answer) ->
+    return res.status(500).send(error) if error
+    res.send answer.photos.photo
+
+app.get "/list", loggedIn, (req, res) ->
+  return res.render "list"
 
 app.get "/photos/:id/info", loggedIn, (req, res) ->
   params =
