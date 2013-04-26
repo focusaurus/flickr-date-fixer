@@ -1,6 +1,7 @@
 define (require, exports, module) ->
   Backbone = require "backbone"
   moment = require "moment"
+  _ = require "lodash"
 
   class Photo extends Backbone.Model
     photoPageURL: =>
