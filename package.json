@@ -1,5 +1,6 @@
 {
-  "name": "flickr_date_fixer",
+  "name": "flickr-date-fixer",
+  "subdomain": "flickrdatefixer",
   "description": "Fix incorrect photo 'taken' dates on flickr",
   "version": "0.0.0",
   "homepage": "http://peterlyons.com/flickr-date-fixer",
@@ -7,6 +8,9 @@
   "author": "Peter Lyons <pete@peterlyons.com> (http://peterlyons.com)",
   "engines": {
     "node": "~0.10"
+  },
+  "scripts": {
+    "start": "./node_modules/.bin/coffee app/server.coffee"
   },
   "dependencies": {
     "coffee-script": "~1.6.2",
@@ -28,6 +32,7 @@
     "grunt-cli": "~0.1.7",
     "grunt": "~0.4.1",
     "grunt-contrib-requirejs": "~0.4.0",
-    "grunt-contrib-coffee": "~0.6.6"
+    "grunt-contrib-coffee": "~0.6.6",
+    "jitsu": "~0.12.10-2"
   }
 }

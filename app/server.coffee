@@ -8,7 +8,7 @@ passport = require "passport"
 {Flickr} = require "flickr"
 stylus = require "stylus"
 
-PORT = 9100
+PORT = 8080
 flickrOptions =
   consumerKey: creds.key,
   consumerSecret: creds.secret,
