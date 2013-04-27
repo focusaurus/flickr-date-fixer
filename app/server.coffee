@@ -1,5 +1,5 @@
 _ = require "lodash"
-creds = require "../creds.json"
+fs = require "fs"
 express = require "express"
 coffeeMW = require "connect-coffee-script"
 FlickrStrategy = require("passport-flickr").Strategy
@@ -8,18 +8,18 @@ passport = require "passport"
 {Flickr} = require "flickr"
 stylus = require "stylus"
 
-PORT = 8080
+PORT = 9100
 flickrOptions =
-  consumerKey: creds.key,
-  consumerSecret: creds.secret,
-  callbackURL: "http://peterlyons.com:#{PORT}/auth/flickr/callback"
+  consumerKey: process.env.FDF_FLICKR_CONSUMER_KEY,
+  consumerSecret: process.env.FDF_FLICKR_CONSUMER_SECRET,
+  callbackURL: process.env.FDF_CALLBACK_URL or "http://peterlyons.com:#{PORT}/auth/flickr/callback"
   userAuthorizationURL: "http://www.flickr.com/services/oauth/authorize?perms=write"
 
 #This hacks in a hard-coded set of auth data for rapid-turnaround
 #dev mode
-_devMode = (req, res, next) ->
-  req.user = creds.devUser
-  next()
+# _devMode = (req, res, next) ->
+#   req.user = creds.devUser
+#   next()
 
 verify = (token, tokenSecret, profile, done) ->
   log.debug "flickr user authorized", profile
@@ -31,7 +31,7 @@ loggedIn = (req, res, next) ->
     user: req.user
   if not req.user
     return res.status(401).redirect "/"
-  req.flickr = new Flickr creds.key, creds.secret
+  req.flickr = new Flickr flickrOptions.consumerKey, flickrOptions.consumerSecret
   req.flickr.setOAuthTokens req.user.token, req.user.tokenSecret
   next()
 
@@ -64,7 +64,7 @@ app.use stylus.middleware stylusOptions
 app.use express.static "#{__dirname}/../generated/rjs"
 app.use express.static "#{__dirname}/../generated"
 app.use express.static "#{__dirname}/../static"
-app.use _devMode if creds.devMode
+# app.use _devMode if creds.devMode
 
 app.get "/", (req, res, next) ->
   res.locals
