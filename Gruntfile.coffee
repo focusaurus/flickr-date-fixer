@@ -15,10 +15,20 @@ setupGrunt = (grunt) ->
         src: ["**/*.coffee"]
         dest: "generated/js"
         ext: ".js"
-    clean: ["generated"]
+    copy:
+      main:
+        cwd: 'static'
+        src: '**/*.js'
+        dest: 'generated'
+        expand: true
+    clean:
+      generated: ["generated"]
+      buildjs: "generated/js/build.js"
   grunt.loadNpmTasks "grunt-contrib-coffee"
+  grunt.loadNpmTasks "grunt-contrib-copy"
   grunt.loadNpmTasks "grunt-contrib-requirejs"
   grunt.loadNpmTasks "grunt-contrib-clean"
-  grunt.registerTask "default", ["requirejs"]
+  grunt.registerTask "prepublish", ["clean:generated", "copy", "coffee", "requirejs", "clean:buildjs"]
+  grunt.registerTask "default", "prepublish"
 
 module.exports = setupGrunt
