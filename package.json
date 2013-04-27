@@ -7,7 +7,7 @@
   "repository": "ssh://git.peterlyons.com/home/plyons/projects/flickr_date_fixer.git",
   "author": "Peter Lyons <pete@peterlyons.com> (http://peterlyons.com)",
   "engines": {
-    "node": "~0.10"
+    "node": "0.10.2"
   },
   "scripts": {
     "start": "./node_modules/.bin/coffee app/server.coffee",
