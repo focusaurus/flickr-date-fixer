@@ -33,7 +33,7 @@ setupGrunt = (grunt) ->
   grunt.loadNpmTasks "grunt-contrib-copy"
   grunt.loadNpmTasks "grunt-contrib-requirejs"
   grunt.loadNpmTasks "grunt-contrib-stylus"
-  grunt.registerTask "prepublish", ["clean:generated", "copy", "coffee", "requirejs", "clean:buildjs", "stylus"]
+  grunt.registerTask "prepublish", ["copy", "coffee", "requirejs", "clean:buildjs", "stylus"]
   grunt.registerTask "default", "prepublish"
 
 module.exports = setupGrunt
