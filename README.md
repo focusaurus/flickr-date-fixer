@@ -9,8 +9,9 @@ My smartphone sets the wrong date on all my photos. Specifically, I have a Andro
 This web app will go through your flickr photos, find ones with the "taken" date within the specified range, and set their "taken" date to match their "uploaded" date.
 
 ## See Also
-
-[http://www.miskatonic.org/2012/05/12/correcting-timestamp-photographs-taken-acer-android-phone]()
+  * [Flickr Date Fixer page at peterlyons.com](http://peterlyons.com/flickr-date-fixer)
+  * [blog post](http://peterlyons.com/problog/2013/04/flickr-date-fixer) announcing the app's first release
+  * [http://www.miskatonic.org/2012/05/12/correcting-timestamp-photographs-taken-acer-android-phone]()
 
 ## License: MIT
 

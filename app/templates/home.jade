@@ -6,6 +6,8 @@ block body
     li select photos to fix
     li Fix 'em!
   button(type="button") Login via Flickr to get started
+  p
+    | Coded with love by <a href="http://peterlyons.com">Peter Lyons</a>. Free and open source at <a href="https://github.com/focusaurus/flickr-date-fixer">github.com/focusaurus/flickr-date-fixer</a>.
   :coffee
     require ["jquery"], ($) ->
       $ -> $("button").on "click", -> window.location = "/auth/flickr"
