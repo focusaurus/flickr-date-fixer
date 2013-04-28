@@ -2,16 +2,16 @@
   "name": "flickr-date-fixer",
   "subdomain": "flickrdatefixer",
   "description": "Fix incorrect photo 'taken' dates on flickr",
-  "version": "0.0.1",
+  "version": "0.0.1-2",
   "homepage": "http://peterlyons.com/flickr-date-fixer",
   "repository": "ssh://git.peterlyons.com/home/plyons/projects/flickr_date_fixer.git",
   "author": "Peter Lyons <pete@peterlyons.com> (http://peterlyons.com)",
   "engines": {
-    "node": "0.10.2"
+    "node": "0.8.x"
   },
   "scripts": {
-    "start": "./node_modules/.bin/coffee app/server.coffee",
-    "prepublish": "./node_modules/.bin/grunt prepublish"
+    "start": "coffee app/server.coffee",
+    "prepublish": "grunt prepublish"
   },
   "files": [
     "app",
