@@ -11,9 +11,8 @@ block body
       photos.once "sync", ->
         $(".photos").replaceWith photoList.el
         photos.each (photo) -> photo.fetchInfo()
-      photos.fetch()
-      $ ->
         $(".fixAll").on "click", -> $(".fix").click()
+      photos.fetch()
 
 
     require ["jquery", "lodash", "backbone", "collections/Photos", "views/PhotoList", "main"], init
